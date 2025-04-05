@@ -134,7 +134,7 @@ if __name__ == "__main__":
         x_material = np.array([0, 1, 2, 3, 4])
         y_material = np.array([11.1, 3.5, 2.8, 4.2, 5.0])
 
-    ls_polynomial = LeastSquaresPolynomial(x_material, y_material, degree=2)
+    ls_polynomial = LeastSquaresPolynomial(x_material, y_material, degree=1)
     x_ajuste = np.linspace(x_material.min(), x_material.max(), 100)
     ls_polynomial.plot(x_ajuste)
 
