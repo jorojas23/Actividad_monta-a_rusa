@@ -2,8 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 from scipy.special import legendre
-import csv  # Para leer datos de CSV
-# import pandas as pd # Otra opción para leer datos
+import csv  
 
 # --- Paso 1: Trazador Cúbico Sujeto ---
 class CubicSplineInterpolator:
@@ -43,13 +42,12 @@ class LeastSquaresPolynomial:
 
     def plot(self, x_vals, title="Ajuste por Mínimos Cuadrados (Datos de Tensión/Compresión)"):
         y_vals = self.evaluate(x_vals)
-        y_fit = self.evaluate(self.x_data)  # Valores ajustados en los puntos x_data
+        y_fit = self.evaluate(self.x_data)  
         
         plt.figure(figsize=(10, 6))
         plt.plot(self.x_data, self.y_data, 'ro', label='Datos experimentales')
         plt.plot(x_vals, y_vals, 'b-', label=f'Polinomio de grado {self.degree}')
         
-        # Dibujar líneas verticales desde los puntos experimentales hasta la curva ajustada
         for xi, yi, y_fit_i in zip(self.x_data, self.y_data, y_fit):
             plt.plot([xi, xi], [yi, y_fit_i], 'g--', alpha=0.5)
         
@@ -95,13 +93,12 @@ class SistemaEcuaciones:
 
 if __name__ == "__main__":
     # --- Paso 1: Definir y graficar la trayectoria ---
-    # Cargar puntos de control desde CSV (ejemplo)
     try:
         x_control = []
         y_control = []
         with open('trayectoria.csv', 'r') as file:
             reader = csv.reader(file)
-            next(reader) # Saltar la primera fila (encabezados)
+            next(reader) 
             for row in reader:
                 x_control.append(float(row[0]))
                 y_control.append(float(row[1]))
@@ -117,7 +114,6 @@ if __name__ == "__main__":
     spline_interpolator.plot(x_trayectoria, title="Trayectoria de la Montaña Rusa")
 
     # --- Paso 2: Ajustar polinomio a datos del material y graficar ---
-    # Cargar datos del material desde CSV (ejemplo)
     try:
         x_material = []
         y_material = []
@@ -139,17 +135,14 @@ if __name__ == "__main__":
     ls_polynomial.plot(x_ajuste)
 
     # --- Paso 3: Graficar Polinomios de Legendre (Optimización requerirá más lógica) ---
-    legendre_plotter = LegendrePlotter(degree=3, x_range=[-1, 1]) # Rango típico para Legendre
+    legendre_plotter = LegendrePlotter(degree=3, x_range=[-1, 1]) 
     legendre_plotter.plot()
     print("Para la optimización con Polinomios de Legendre, necesitarás definir el tramo a optimizar y una función objetivo.")
 
     # --- Paso 4: Resolver sistema de ecuaciones para fuerzas ---
-    # Definir la matriz A y el vector b (ESTO DEPENDE DE TU MODELO ESTRUCTURAL)
-    A_fuerzas = [[4, -1, 0, 0],
-                  [-1, 4, -1, 0],
-                  [0, -1, 4, -1],
-                  [0, 0, -1, 3]]
-    b_fuerzas = [15, 10, 10, 10]
+    
+    A_fuerzas = [[1, 2, 1], [2, -1, 1], [3, 1, -1]]
+    b_fuerzas = [4, 1, -2]
 
     sistema_fuerzas = SistemaEcuaciones(A_fuerzas, b_fuerzas)
     soluciones_fuerzas = sistema_fuerzas.resolver()
